@@ -14,15 +14,15 @@ diff --git a/media/libaudioclient/include/media/AudioParameter.h b/media/libaudi
 index 1ace607..ee1804c 100644
 --- a/media/libaudioclient/include/media/AudioParameter.h
 +++ b/media/libaudioclient/include/media/AudioParameter.h
-@@ -76,6 +76,7 @@ public:
-     static const char * const valueListSeparator;
+@@ -87,6 +87,7 @@ public:
+     static const char * const keyReconfigA2dpSupported;
  
      String8 toString() const { return toStringImpl(true); }
 +    String8 toString();
      String8 keysToString() const { return toStringImpl(false); }
  
      status_t add(const String8& key, const String8& value);
-@@ -86,8 +87,11 @@ public:
+@@ -97,8 +98,11 @@ public:
      status_t remove(const String8& key);
  
      status_t get(const String8& key, String8& value) const;
