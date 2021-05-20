@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.camera.provider@2.4-service.kminilte"
+#define LOG_TAG "android.hardware.camera.provider@2.4-service.universal3470"
 
 #include <android/hardware/camera/provider/2.4/ICameraProvider.h>
 #include <hidl/LegacySupport.h>

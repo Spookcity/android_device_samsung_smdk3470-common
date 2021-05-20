@@ -63,7 +63,7 @@ PRODUCT_PACKAGES += \
     camera.universal3470 \
     camera.vendor.universal3470 \
     android.hardware.camera.provider@2.4-impl-legacy \
-    android.hardware.camera.provider@2.4-service.kminilte \
+    android.hardware.camera.provider@2.4-service.universal3470 \
     libshim_camera
 
 # DRM
