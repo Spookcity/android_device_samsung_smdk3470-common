@@ -21,10 +21,10 @@
 /* ALSA cards for WM1811 */
 #define CARD_DEFAULT  0
 
-#define PORT_PLAYBACK 3
+#define PORT_PLAYBACK 0
 #define PORT_MODEM    1
 #define PORT_BT       2
-#define PORT_CAPTURE  0
+#define PORT_CAPTURE  3
 
 #define PCM_WRITE pcm_write
 
@@ -54,10 +54,10 @@
 #define RESAMPLER_BUFFER_FRAMES (PLAYBACK_PERIOD_SIZE * 2)
 #define RESAMPLER_BUFFER_SIZE (4 * RESAMPLER_BUFFER_FRAMES)
 
-#define DEFAULT_OUT_SAMPLING_RATE 48000
-#define MM_LOW_POWER_SAMPLING_RATE 48000
-#define MM_FULL_POWER_SAMPLING_RATE 48000
-#define DEFAULT_IN_SAMPLING_RATE 48000
+#define DEFAULT_OUT_SAMPLING_RATE 44100
+#define MM_LOW_POWER_SAMPLING_RATE 44100
+#define MM_FULL_POWER_SAMPLING_RATE 44100
+#define DEFAULT_IN_SAMPLING_RATE 44100
 
 /* sampling rate when using VX port for narrow band */
 #define VX_NB_SAMPLING_RATE 8000
@@ -65,8 +65,7 @@
 #define VX_WB_SAMPLING_RATE 16000
 
 /* product-specific defines */
-#define PRODUCT_DEVICE_PROPERTY "ro.product.device"
-#define PRODUCT_NAME_PROPERTY   "ro.product.name"
+#define PRODUCT_MODEL_PROPERTY "ro.product.model"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
@@ -102,4 +101,139 @@ enum tty_modes {
     TTY_MODE_VCO,
     TTY_MODE_HCO,
     TTY_MODE_FULL
+};
+
+struct mixer_ctls
+{
+    struct mixer_ctl *mixinl_in1l_volume;
+    struct mixer_ctl *mixinl_in2l_volume;
+};
+
+struct route_setting
+{
+    char *ctl_name;
+    int intval;
+    char *strval;
+};
+
+struct route_setting voicecall_default[] = {
+    { .ctl_name = "AIF2 Mode", .intval = 0, },
+    { .ctl_name = "DAC1L Mixer AIF1.1 Switch", .intval = 1, },
+    { .ctl_name = "DAC1R Mixer AIF1.1 Switch", .intval = 1, },
+    { .ctl_name = "DAC1L Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = "DAC1R Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = "AIF2DAC Mux", .strval = "AIF2DACDAT", },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting voicecall_default_disable[] = {
+    { .ctl_name = "AIF2 Mode", .intval = 0, },
+    { .ctl_name = "DAC1L Mixer AIF2 Switch", .intval = 0, },
+    { .ctl_name = "DAC1R Mixer AIF2 Switch", .intval = 0, },
+    { .ctl_name = "AIF2DAC Mux", .strval = "AIF3DACDAT", },
+    { .ctl_name = "Main Mic Switch", .intval = 0, },
+    { .ctl_name = "MIXINL IN2L Switch", .intval = 0, },
+    { .ctl_name = "Sub Mic Switch", .intval = 0, },
+    { .ctl_name = "MIXINR IN1R Switch", .intval = 0, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting default_input[] = {
+    { .ctl_name = "Main Mic Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADCL Source", .intval = 0, },
+    { .ctl_name = "MIXINL IN1L Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADC1 HPF Mode", .intval = 1, },
+    { .ctl_name = "AIF1ADC1 HPF Switch", .intval = 1, },
+    { .ctl_name = "IN1L Volume", .intval = 28, },
+    { .ctl_name = "MIXINL IN1L Volume", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
+    { .ctl_name = "Submic ADC invert", .intval = 0, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting default_input_disable[] = {
+    { .ctl_name = "Main Mic Switch", .intval = 0, },
+    { .ctl_name = "MIXINL IN1L Switch", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 HPF Mode", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 HPF Switch", .intval = 0, },
+    { .ctl_name = "IN1L Volume", .intval = 30, },
+    { .ctl_name = "MIXINL IN1L Volume", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 120, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting headset_input[] = {
+    { .ctl_name = "Headset Mic Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADCL Source", .intval = 1, },
+    { .ctl_name = "AIF1ADCR Source", .intval = 1, },
+    { .ctl_name = "MIXINR IN1R Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADC1 HPF Mode", .intval = 1, },
+    { .ctl_name = "AIF1ADC1 HPF Switch", .intval = 1, },
+    { .ctl_name = "IN1R Volume", .intval = 28, },
+    { .ctl_name = "MIXINR IN1R Volume", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
+    { .ctl_name = "Submic ADC invert", .intval = 0, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting headset_input_disable[] = {
+    { .ctl_name = "Headset Mic Switch", .intval = 0, },
+    { .ctl_name = "MIXINR IN1R Switch", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 HPF Mode", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 HPF Switch", .intval = 0, },
+    { .ctl_name = "IN1R Volume", .intval = 11, },
+    { .ctl_name = "MIXINR IN1R Volume", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting bt_output[] = {
+    { .ctl_name = "AIF3ADC Mux", .intval = 1, },
+    { .ctl_name = "AIF2DAC2L Mixer AIF1.1 Switch", .intval = 1, },
+    { .ctl_name = "AIF2DAC2R Mixer AIF1.1 Switch", .intval = 1, },
+    { .ctl_name = "AIF2DAC Volume", .intval = 96, },
+    { .ctl_name = "DAC2 Volume", .intval = 96, },
+    { .ctl_name = "AIF1DAC1 Volume", .intval = 96, },
+    { .ctl_name = "Speaker Mixer Volume", .intval = 1, },
+    { .ctl_name = "MIXINL IN2L Volume", .intval = 1, },
+    { .ctl_name = "IN1L Volume", .intval = 25, },
+    { .ctl_name = "IN1R Volume", .intval = 25, },
+    { .ctl_name = "Speaker Boost Volume", .intval = 4, },
+    { .ctl_name = "LINEOUT1N Switch", .intval = 0, },
+    { .ctl_name = "LINEOUT1P Switch", .intval = 0, },
+    { .ctl_name = "AIF2DACR Source", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 HPF Switch", .intval = 0, },
+    { .ctl_name = "AIF2ADC HPF Mode", .intval = 1, },
+    { .ctl_name = "AIF2ADC HPF Switch", .intval = 1, },
+    { .ctl_name = "AIF2DAC Mux", .strval = "AIF2DACDAT", },
+    { .ctl_name = "AIF2DAC2R Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = "AIF2DAC2L Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting bt_input[] = {
+    { .ctl_name = "AIF2ADC Mux", .intval = 1, },
+    { .ctl_name = "AIF1ADCL Source", .intval = 0, },
+    { .ctl_name = "AIF1ADCR Source", .intval = 1, },
+    { .ctl_name = "AIF1ADC1R Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADC1L Mixer AIF2 Switch", .intval = 1, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
+    { .ctl_name = "AIF2DAC Volume", .intval = 96, },
+    { .ctl_name = "Submic ADC invert", .intval = 0, },
+    { .ctl_name = NULL, },
+};
+
+struct route_setting bt_disable[] = {
+    { .ctl_name = "AIF2ADC Mux", .intval = 0, },
+    { .ctl_name = "AIF1ADC1R Mixer AIF2 Switch", .intval = 0, },
+    { .ctl_name = "AIF1ADC1L Mixer AIF2 Switch", .intval = 0, },
+    { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
+    { .ctl_name = "AIF2DAC Volume", .intval = 96, },
+    { .ctl_name = "AIF2DAC2L Mixer AIF1.1 Switch", .intval = 0, },
+    { .ctl_name = "AIF2DAC2R Mixer AIF1.1 Switch", .intval = 0, },
+    { .ctl_name = "AIF1DAC1 Volume", .intval = 96, },
+    { .ctl_name = "AIF1 Boost Volume", .intval = 0, },
+    { .ctl_name = "DAC2 Volume", .intval = 96, },
+    { .ctl_name = "AIF2DAC Volume", .intval = 96, },
+    { .ctl_name = NULL, },
 };
