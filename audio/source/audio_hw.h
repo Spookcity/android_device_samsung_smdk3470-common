@@ -147,7 +147,6 @@ struct route_setting default_input[] = {
     { .ctl_name = "IN1L Volume", .intval = 28, },
     { .ctl_name = "MIXINL IN1L Volume", .intval = 0, },
     { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
-    { .ctl_name = "Submic ADC invert", .intval = 0, },
     { .ctl_name = NULL, },
 };
 
@@ -219,7 +218,6 @@ struct route_setting bt_input[] = {
     { .ctl_name = "AIF1ADC1L Mixer AIF2 Switch", .intval = 1, },
     { .ctl_name = "AIF1ADC1 Volume", .intval = 96, },
     { .ctl_name = "AIF2DAC Volume", .intval = 96, },
-    { .ctl_name = "Submic ADC invert", .intval = 0, },
     { .ctl_name = NULL, },
 };
 
