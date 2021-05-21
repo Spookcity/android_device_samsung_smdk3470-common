@@ -2981,7 +2981,7 @@ static int adev_config_parse(struct m0_audio_device *adev)
 
     ALOGV("PRODUCT_MODEL_PROPERTY = %s\n", PRODUCT_MODEL_PROPERTY);
 
-    snprintf(file, sizeof(file), "/system/etc/sound/%s", "tiny_hw.xml");
+    snprintf(file, sizeof(file), "/system/vendor/etc/sound/%s", "tiny_hw.xml");
 
     ALOGV("Reading configuration from %s\n", file);
     f = fopen(file, "r");
