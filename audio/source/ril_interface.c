@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The CyanogenMod Project
+ * Copyright (C) 2011 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@
 
 #include <utils/Log.h>
 #include <cutils/properties.h>
-#include <errno.h>
 
 #include "ril_interface.h"
 
@@ -36,10 +35,8 @@ int (*_ril_connect)(void *);
 int (*_ril_is_connected)(void *);
 int (*_ril_disconnect)(void *);
 int (*_ril_set_call_volume)(void *, enum ril_sound_type, int);
-int (*_ril_set_call_audio_path)(void *, enum ril_audio_path, int);
+int (*_ril_set_call_audio_path)(void *, enum ril_audio_path);
 int (*_ril_set_call_clock_sync)(void *, enum ril_clock_state);
-int (*_ril_set_mute)(void *, int);
-int (*_ril_set_two_mic_control)(void *, enum ril_two_mic_device, enum ril_two_mic_state);
 int (*_ril_register_unsolicited_handler)(void *, int, void *);
 int (*_ril_get_wb_amr)(void *, void *);
 
@@ -75,7 +72,7 @@ static int ril_connect_if_required(struct ril_handle *ril)
         return 0;
 
     if (_ril_connect(ril->client) != RIL_CLIENT_ERR_SUCCESS) {
-        ALOGE("ril_connect() failed: %s", strerror(errno));
+        ALOGE("ril_connect() failed");
         return -1;
     }
 
@@ -109,8 +106,6 @@ int ril_open(struct ril_handle *ril)
     _ril_set_call_volume = dlsym(ril->handle, "SetCallVolume");
     _ril_set_call_audio_path = dlsym(ril->handle, "SetCallAudioPath");
     _ril_set_call_clock_sync = dlsym(ril->handle, "SetCallClockSync");
-    _ril_set_mute = dlsym(ril->handle, "SetMute");
-    _ril_set_two_mic_control = dlsym(ril->handle, "SetTwoMicControl");
     _ril_register_unsolicited_handler = dlsym(ril->handle,
                                               "RegisterUnsolicitedHandler");
     /* since this function is not supported in all RILs, don't require it */
@@ -118,7 +113,7 @@ int ril_open(struct ril_handle *ril)
 
     if (!_ril_open_client || !_ril_close_client || !_ril_connect ||
         !_ril_is_connected || !_ril_disconnect || !_ril_set_call_volume ||
-        !_ril_set_call_audio_path || !_ril_set_two_mic_control || !_ril_set_call_clock_sync ||
+        !_ril_set_call_audio_path || !_ril_set_call_clock_sync ||
         !_ril_register_unsolicited_handler) {
         ALOGE("Cannot get symbols from '%s'", RIL_CLIENT_LIBPATH);
         dlclose(ril->handle);
@@ -171,14 +166,12 @@ int ril_set_call_volume(struct ril_handle *ril, enum ril_sound_type sound_type,
                                 (int)(volume * ril->volume_steps_max));
 }
 
-int ril_set_call_audio_path(struct ril_handle *ril,
-                            enum ril_audio_path path,
-                            enum ril_extra_volume mode)
+int ril_set_call_audio_path(struct ril_handle *ril, enum ril_audio_path path)
 {
     if (ril_connect_if_required(ril))
         return 0;
 
-    return _ril_set_call_audio_path(ril->client, path, mode);
+    return _ril_set_call_audio_path(ril->client, path);
 }
 
 int ril_set_call_clock_sync(struct ril_handle *ril, enum ril_clock_state state)
@@ -187,20 +180,4 @@ int ril_set_call_clock_sync(struct ril_handle *ril, enum ril_clock_state state)
         return 0;
 
     return _ril_set_call_clock_sync(ril->client, state);
-}
-
-int ril_set_mute(struct ril_handle *ril, enum ril_mute_state state)
-{
-    if (ril_connect_if_required(ril))
-        return 0;
-
-    return _ril_set_mute(ril->client, state);
-}
-
-int ril_set_two_mic_control(struct ril_handle *ril, enum ril_two_mic_device device, enum ril_two_mic_state state)
-{
-    if (ril_connect_if_required(ril))
-        return 0;
-
-    return _ril_set_two_mic_control(ril->client, device, state);
 }
