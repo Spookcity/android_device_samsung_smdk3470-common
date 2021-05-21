@@ -31,7 +31,7 @@ PRODUCT_PACKAGES += \
 
 # needed by open-source audio-hal
 PRODUCT_PACKAGES += \
-    mixer_paths.xml
+   tiny_hw
 
 # needed by stock audio-hal
 PRODUCT_PACKAGES += \
