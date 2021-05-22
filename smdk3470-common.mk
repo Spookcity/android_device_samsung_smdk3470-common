@@ -208,3 +208,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat-threads=1 \
     dalvik.vm.image-dex2oat-threads=1
+
+# Build with specific settings for universal3470-common
+$(call inherit-product, $(LOCAL_PATH)/go_universal3470-common.mk)
