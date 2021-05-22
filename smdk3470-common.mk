@@ -203,3 +203,8 @@ PRODUCT_COPY_FILES += \
 # USB Accesory
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
+
+# Art
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-threads=1 \
+    dalvik.vm.image-dex2oat-threads=1
