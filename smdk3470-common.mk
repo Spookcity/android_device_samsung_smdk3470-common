@@ -31,7 +31,7 @@ PRODUCT_PACKAGES += \
 
 # needed by open-source audio-hal
 PRODUCT_PACKAGES += \
-    mixer_paths.xml
+   tiny_hw
 
 # needed by stock audio-hal
 PRODUCT_PACKAGES += \
@@ -63,7 +63,7 @@ PRODUCT_PACKAGES += \
     camera.universal3470 \
     camera.vendor.universal3470 \
     android.hardware.camera.provider@2.4-impl-legacy \
-    android.hardware.camera.provider@2.4-service.kminilte \
+    android.hardware.camera.provider@2.4-service.universal3470 \
     libshim_camera
 
 # DRM
@@ -203,3 +203,11 @@ PRODUCT_COPY_FILES += \
 # USB Accesory
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
+
+# Art
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dex2oat-threads=1 \
+    dalvik.vm.image-dex2oat-threads=1
+
+# Build with specific settings for universal3470-common
+$(call inherit-product, $(LOCAL_PATH)/go_universal3470-common.mk)

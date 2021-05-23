@@ -27,8 +27,15 @@ const char _ZN7android16CameraParameters17EFFECT_POINT_BLUEE[] = "point-blue";
 const char _ZN7android16CameraParameters19EFFECT_VINTAGE_COLDE[] = "vintage-cold";
 const char _ZN7android16CameraParameters19EFFECT_VINTAGE_WARME[] = "vintage-warm";
 const char _ZN7android16CameraParameters13EFFECT_WASHEDE[] = "washed";
-
+//degaslte
 const char _ZN7android16CameraParameters26PIXEL_FORMAT_YUV420SP_NV21E[] = "nv21";
+const char _ZN7android16CameraParameters15KEY_KIDS_CAMERAE[] = "kids-camera";
+const char _ZN7android16CameraParameters12KEY_METERINGE[] = "metering";
+const char _ZN7android16CameraParameters11KEY_WEATHERE[] = "weather";
+const char _ZN7android16CameraParameters10KEY_CITYIDE[] = "cityid";
+const char _ZN7android16CameraParameters15METERING_CENTERE[] = "center";
+const char _ZN7android16CameraParameters15METERING_MATRIXE[] = "matrix";
+const char _ZN7android16CameraParameters13METERING_SPOTE[] = "spot";
 
 extern int _ZNK7android16CameraParameters8getInt64EPKc(const char *key) { return -1; }
 
